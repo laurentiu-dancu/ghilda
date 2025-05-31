@@ -1,19 +1,7 @@
-import { useEffect } from 'react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../hooks/useAuth';
 
 export default function Navigation() {
   const { user, isAuthenticated } = useAuth();
-  
-  console.log('Navigation render:', { user, isAuthenticated });
-  
-  useEffect(() => {
-    console.log('Navigation session changed:', {
-      isAuthenticated,
-      userEmail: user?.email,
-      hasUser: !!user,
-      metadata: user?.user_metadata
-    });
-  }, [user, isAuthenticated]);
 
   return (
     <nav className="max-w-4xl mx-auto px-4 py-4">
