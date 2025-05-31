@@ -3,6 +3,7 @@ import { supabase } from '../lib/supabase';
 export default function Auth() {
   const handleGitHubLogin = async () => {
     try {
+      console.log('Auth Debug: Starting GitHub login flow');
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
         options: {
@@ -11,12 +12,13 @@ export default function Auth() {
         }
       });
       if (error) {
-        console.error('Auth error:', error);
+        console.error('Auth Debug: GitHub login error:', error);
         throw error;
       }
+      console.log('Auth Debug: GitHub login initiated successfully');
     } catch (error) {
       alert('Authentication failed. Please try again.');
-      console.error('Auth error:', error);
+      console.error('Auth Debug: Login error:', error);
     }
   };
 
