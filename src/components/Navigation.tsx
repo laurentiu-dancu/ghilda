@@ -1,9 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Navigation() {
   const { session } = useAuth();
-  const [isAuthenticated, setIsAuthenticated] = useState(!!session);
   
   useEffect(() => {
     console.log('Navigation session changed:', {
@@ -13,7 +12,6 @@ export default function Navigation() {
       hasUser: !!session?.user,
       metadata: session?.user?.user_metadata
     });
-    setIsAuthenticated(!!session);
   }, [session]);
 
   return (
@@ -29,7 +27,7 @@ export default function Navigation() {
           <a href="/despre" className="text-gray-600 hover:text-gray-900">
             Despre
           </a>
-          {isAuthenticated ? (
+          {session ? (
             <div className="flex items-center gap-4">
               <span className="text-gray-600">{session?.user?.email}</span>
               <a href="/admin" className="text-blue-600 hover:text-blue-800">
