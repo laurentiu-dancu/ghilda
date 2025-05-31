@@ -1,7 +1,7 @@
 import { defineMiddleware } from 'astro:middleware';
 import { supabase } from '../lib/supabase';
 
-async function logAuthState(request: Request) {
+async function getAuthState(request: Request) {
   const { data: { session } } = await supabase.auth.getSession();
   console.log('Auth Debug:', {
     url: request.url,
@@ -10,26 +10,33 @@ async function logAuthState(request: Request) {
     email: session?.user?.email,
     timestamp: new Date().toISOString()
   });
+  return session;
 }
 
 export const onRequest = defineMiddleware(async ({ request, redirect }, next) => {
   const url = new URL(request.url);
   const isAdminRoute = url.pathname.startsWith('/admin');
   const isLoginPage = url.pathname === '/admin' || url.pathname === '/admin/';
+  const isDashboardPage = url.pathname === '/admin/dashboard';
 
-  await logAuthState(request);
+  const session = await getAuthState(request);
 
   if (isAdminRoute) {
-    const { data: { session } } = await supabase.auth.getSession();
-    
-    if (!session && !isLoginPage) {
+    if (!session && !isLoginPage && !isDashboardPage) {
       console.log('Auth Debug: Redirecting to login - No session found');
       return redirect('/admin');
+    }
+
+    if (session && isLoginPage) {
+      console.log('Auth Debug: Redirecting to dashboard - User is authenticated');
+      return redirect('/admin/dashboard');
     }
     
     console.log('Auth Debug: Allowing access to admin route', {
       path: url.pathname,
-      isLoginPage
+      isLoginPage,
+      isDashboardPage,
+      hasSession: !!session
     });
   }
   
