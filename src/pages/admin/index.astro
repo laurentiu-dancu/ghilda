@@ -1,0 +1,26 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Auth from '../../components/Auth';
+import { supabase } from '../../lib/supabase';
+
+const session = await supabase.auth.getSession();
+const isAuthenticated = !!session.data.session;
+---
+
+<Layout title="Admin - Ghilda Călătorilor">
+  <div class="max-w-4xl mx-auto">
+    {!isAuthenticated ? (
+      <Auth client:load />
+    ) : (
+      <div class="space-y-6">
+        <h1 class="text-3xl font-bold">Panou de administrare</h1>
+        <a
+          href="/admin/post/new"
+          class="inline-block bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
+        >
+          Articol nou
+        </a>
+      </div>
+    )}
+  </div>
+</Layout>
