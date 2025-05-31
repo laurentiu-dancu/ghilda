@@ -6,5 +6,5 @@ import react from '@astrojs/react';
 export default defineConfig({
   site: 'https://ghilda.ro',
   integrations: [mdx(), tailwind(), react()],
-  output: 'static',
+  output: 'server',
 });
