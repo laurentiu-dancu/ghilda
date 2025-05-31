@@ -3,7 +3,6 @@ import { useAuth } from '../contexts/AuthContext';
 export default function Navigation() {
   const { session, loading } = useAuth();
   const isAuthenticated = !!session;
-  const userEmail = loading ? 'Loading...' : session?.user?.email;
   
   console.log('Navigation render:', { isAuthenticated, userEmail, loading });
 
@@ -22,16 +21,13 @@ export default function Navigation() {
           </a>
           {isAuthenticated ? (
             <div className="flex items-center gap-4">
-              <span className="text-gray-600">{userEmail}</span>
+              <span className="text-gray-600">{session.user.email}</span>
               <a href="/admin" className="text-blue-600 hover:text-blue-800">
                 Panou Admin
               </a>
             </div>
           ) : (
-            <a
-              href="/admin"
-              className="inline-block px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
-            >
+            <a href="/admin" className="text-blue-600 hover:text-blue-800">
               Autentificare
             </a>
           )}
