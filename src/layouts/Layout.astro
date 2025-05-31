@@ -1,10 +1,15 @@
 ---
+import { supabase } from '../lib/supabase';
+
 interface Props {
   title: string;
   description?: string;
 }
 
 const { title, description = "Ghilda Călătorilor - Experiențe și povești din călătorii" } = Astro.props;
+
+const session = await supabase.auth.getSession();
+const isAuthenticated = !!session.data.session;
 ---
 
 <!DOCTYPE html>
@@ -25,6 +30,11 @@ const { title, description = "Ghilda Călătorilor - Experiențe și povești di
           <div class="space-x-4">
             <a href="/calatorii" class="text-gray-600 hover:text-gray-900">Călătorii</a>
             <a href="/despre" class="text-gray-600 hover:text-gray-900">Despre</a>
+            {isAuthenticated ? (
+              <a href="/admin" class="text-blue-600 hover:text-blue-800">Panou Admin</a>
+            ) : (
+              <a href="/admin" class="text-blue-600 hover:text-blue-800">Autentificare</a>
+            )}
           </div>
         </div>
       </nav>
