@@ -1,16 +1,20 @@
+import { useEffect, useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Navigation() {
   const { session } = useAuth();
-  const isAuthenticated = !!session;
+  const [isAuthenticated, setIsAuthenticated] = useState(!!session);
   
-  console.log('Navigation session changed:', {
-    session,
-    isAuthenticated,
-    userEmail: session?.user?.email,
-    hasUser: !!session?.user,
-    metadata: session?.user?.user_metadata
-  });
+  useEffect(() => {
+    console.log('Navigation session changed:', {
+      session,
+      isAuthenticated: !!session,
+      userEmail: session?.user?.email,
+      hasUser: !!session?.user,
+      metadata: session?.user?.user_metadata
+    });
+    setIsAuthenticated(!!session);
+  }, [session]);
 
   return (
     <nav className="max-w-4xl mx-auto px-4 py-4">
