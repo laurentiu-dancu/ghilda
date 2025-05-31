@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '../lib/supabase';
+import { useAuth } from '../hooks/useAuth';
 
 interface PostFormProps {
   initialData?: {
@@ -14,6 +15,7 @@ interface PostFormProps {
 }
 
 export default function PostForm({ initialData = {} }: PostFormProps) {
+  const { user } = useAuth();
   const [formData, setFormData] = useState({
     title: initialData.title || '',
     content: initialData.content || '',
@@ -42,7 +44,7 @@ export default function PostForm({ initialData = {} }: PostFormProps) {
       } else {
         const { error } = await supabase
           .from('posts')
-          .insert([formData]);
+          .insert([{ ...formData, user_id: user?.id }]);
         
         if (error) throw error;
         setMessage('Articolul a fost creat cu succes!');
@@ -64,8 +66,14 @@ export default function PostForm({ initialData = {} }: PostFormProps) {
     }
   };
 
+  useEffect(() => {
+    if (!user) {
+      setMessage('Trebuie să fii autentificat pentru a crea articole.');
+    }
+  }, [user]);
+
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6" style={{ opacity: user ? 1 : 0.5 }}>
       <div>
         <label className="block text-sm font-medium text-gray-700">Titlu</label>
         <input
@@ -73,6 +81,7 @@ export default function PostForm({ initialData = {} }: PostFormProps) {
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          disabled={!user}
           required
         />
       </div>
@@ -84,6 +93,7 @@ export default function PostForm({ initialData = {} }: PostFormProps) {
           onChange={(e) => setFormData({ ...formData, content: e.target.value })}
           rows={10}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          disabled={!user}
           required
         />
       </div>
@@ -95,6 +105,7 @@ export default function PostForm({ initialData = {} }: PostFormProps) {
           value={formData.location}
           onChange={(e) => setFormData({ ...formData, location: e.target.value })}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          disabled={!user}
           required
         />
       </div>
@@ -106,6 +117,7 @@ export default function PostForm({ initialData = {} }: PostFormProps) {
           value={formData.duration}
           onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          disabled={!user}
           required
         />
       </div>
@@ -116,6 +128,7 @@ export default function PostForm({ initialData = {} }: PostFormProps) {
           value={formData.difficulty}
           onChange={(e) => setFormData({ ...formData, difficulty: e.target.value as 'ușor' | 'mediu' | 'dificil' })}
           className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          disabled={!user}
         >
           <option value="ușor">Ușor</option>
           <option value="mediu">Mediu</option>
@@ -129,13 +142,14 @@ export default function PostForm({ initialData = {} }: PostFormProps) {
           checked={formData.published}
           onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
           className="rounded border-gray-300 text-blue-600 shadow-sm"
+          disabled={!user}
         />
         <label className="ml-2 text-sm text-gray-700">Publicat</label>
       </div>
 
       <button
         type="submit"
-        disabled={isLoading}
+        disabled={isLoading || !user}
         className="w-full bg-blue-600 text-white rounded-md py-2 hover:bg-blue-700 disabled:bg-blue-400"
       >
         {isLoading ? 'Se procesează...' : initialData.id ? 'Actualizează' : 'Creează'}
