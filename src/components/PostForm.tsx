@@ -72,7 +72,7 @@ export default function PostForm({ initialData = {} }: PostFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8 space-y-6">
+    <form onSubmit={handleSubmit} className="max-w-4xl mx-auto bg-white rounded-lg shadow-lg p-8 space-y-6">
       <div>
         <label className="block text-sm font-medium text-earth-700 mb-1">Titlu</label>
         <input
