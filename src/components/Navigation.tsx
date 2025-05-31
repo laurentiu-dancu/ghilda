@@ -4,6 +4,8 @@ import { useAuth } from '../contexts/AuthContext';
 export default function Navigation() {
   const { user, isAuthenticated } = useAuth();
   
+  console.log('Navigation render:', { user, isAuthenticated });
+  
   useEffect(() => {
     console.log('Navigation session changed:', {
       isAuthenticated,
