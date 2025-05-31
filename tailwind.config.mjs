@@ -3,6 +3,20 @@ export default {
   content: ['./src/**/*.{astro,html,js,jsx,md,mdx,svelte,ts,tsx,vue}'],
   theme: {
     extend: {
+      keyframes: {
+        heroFade: {
+          '0%': { opacity: '0', transform: 'scale(1.1)' },
+          '100%': { opacity: '1', transform: 'scale(1)' }
+        },
+        contentFade: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' }
+        }
+      },
+      animation: {
+        'hero': 'heroFade 1.5s ease-out',
+        'content': 'contentFade 1s ease-out 0.5s both'
+      },
       colors: {
         earth: {
           50: '#f7f3ed',
