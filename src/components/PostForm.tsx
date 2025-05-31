@@ -72,14 +72,14 @@ export default function PostForm({ initialData = {} }: PostFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto bg-white rounded-lg shadow-lg p-8 space-y-6">
+    <form onSubmit={handleSubmit} className="max-w-2xl mx-auto bg-white rounded-lg shadow-lg p-8 space-y-6">
       <div>
         <label className="block text-sm font-medium text-earth-700 mb-1">Titlu</label>
         <input
           type="text"
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-forest-500 focus:border-forest-500"
           disabled={!user}
           required
         />
@@ -91,7 +91,7 @@ export default function PostForm({ initialData = {} }: PostFormProps) {
           value={formData.content}
           onChange={(e) => setFormData({ ...formData, content: e.target.value })}
           rows={10}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-forest-500 focus:border-forest-500"
           disabled={!user}
           required
         />
@@ -103,7 +103,7 @@ export default function PostForm({ initialData = {} }: PostFormProps) {
           type="text"
           value={formData.location}
           onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-forest-500 focus:border-forest-500"
           disabled={!user}
           required
         />
@@ -115,7 +115,7 @@ export default function PostForm({ initialData = {} }: PostFormProps) {
           type="text"
           value={formData.duration}
           onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-forest-500 focus:border-forest-500"
           disabled={!user}
           required
         />
@@ -126,7 +126,7 @@ export default function PostForm({ initialData = {} }: PostFormProps) {
         <select
           value={formData.difficulty}
           onChange={(e) => setFormData({ ...formData, difficulty: e.target.value as 'ușor' | 'mediu' | 'dificil' })}
-          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
+          className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-forest-500 focus:border-forest-500"
           disabled={!user}
         >
           <option value="ușor">Ușor</option>
@@ -140,7 +140,7 @@ export default function PostForm({ initialData = {} }: PostFormProps) {
           type="checkbox"
           checked={formData.published}
           onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
-          className="rounded border-gray-300 text-forest-600 focus:ring-forest-500"
+          className="rounded border-gray-300 text-forest-600 focus:outline-none focus:ring-1 focus:ring-forest-500"
           disabled={!user}
         />
         <label className="ml-2 text-sm text-gray-700">Publicat</label>
