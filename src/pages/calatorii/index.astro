@@ -1,0 +1,112 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import { createSupabaseServerClient } from '../../lib/supabaseServer';
+
+// Get page from URL params, default to 1
+const page = Number(Astro.url.searchParams.get('page') || '1');
+const postsPerPage = 12;
+
+const supabase = createSupabaseServerClient(Astro.cookies);
+
+// Fetch total count for pagination
+const { count } = await supabase
+  .from('posts')
+  .select('*', { count: 'exact', head: true })
+  .eq('published', true);
+
+const totalPages = Math.ceil((count || 0) / postsPerPage);
+
+// Fetch paginated posts
+const { data: posts } = await supabase
+  .from('posts')
+  .select('*')
+  .eq('published', true)
+  .order('created_at', { ascending: false })
+  .range((page - 1) * postsPerPage, page * postsPerPage - 1);
+---
+
+<Layout title="Călătorii - Ghilda Călătorilor">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold mb-8">Călătorii</h1>
+    
+    {posts && posts.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {posts.map((post) => (
+          <article class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-xl transition-shadow">
+            <div class="p-6">
+              <h2 class="text-xl font-bold mb-2">
+                <a href={`/calatorii/${post.id}`} class="text-earth-800 hover:text-forest-600 transition-colors">
+                  {post.title}
+                </a>
+              </h2>
+              <div class="flex flex-wrap gap-3 text-sm text-gray-600 mb-4">
+                <span class="flex items-center">
+                  <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                  {post.location}
+                </span>
+                <span class={`px-2 py-0.5 rounded-full text-xs ${
+                  post.difficulty === 'ușor' 
+                    ? 'bg-green-100 text-green-800'
+                    : post.difficulty === 'mediu'
+                    ? 'bg-yellow-100 text-yellow-800'
+                    : 'bg-red-100 text-red-800'
+                }`}>
+                  {post.difficulty}
+                </span>
+              </div>
+              <p class="text-gray-600 line-clamp-3">
+                {post.content.slice(0, 150)}...
+              </p>
+              <a 
+                href={`/calatorii/${post.id}`}
+                class="inline-block mt-4 text-forest-600 hover:text-forest-700"
+              >
+                Citește mai mult →
+              </a>
+            </div>
+          </article>
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-12">
+        <p class="text-gray-600">Nu există încă articole publicate.</p>
+      </div>
+    )}
+
+    {totalPages > 1 && (
+      <div class="flex justify-center gap-2 mt-12">
+        {page > 1 && (
+          <a
+            href={`/calatorii?page=${page - 1}`}
+            class="px-4 py-2 bg-white border border-earth-200 text-earth-600 rounded-md hover:bg-earth-50 transition-colors"
+          >
+            Anterior
+          </a>
+        )}
+        {Array.from({ length: totalPages }, (_, i) => i + 1).map((pageNum) => (
+          <a
+            href={`/calatorii?page=${pageNum}`}
+            class={`px-4 py-2 border rounded-md ${
+              pageNum === page
+                ? 'bg-forest-600 text-white border-forest-600'
+                : 'bg-white border-earth-200 text-earth-600 hover:bg-earth-50'
+            }`}
+          >
+            {pageNum}
+          </a>
+        ))}
+        {page < totalPages && (
+          <a
+            href={`/calatorii?page=${page + 1}`}
+            class="px-4 py-2 bg-white border border-earth-200 text-earth-600 rounded-md hover:bg-earth-50 transition-colors"
+          >
+            Următoarea
+          </a>
+        )}
+      </div>
+    )}
+  </div>
+</Layout>
