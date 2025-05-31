@@ -3,14 +3,10 @@ import { supabase } from '../lib/supabase';
 export default function Auth() {
   const handleGitHubLogin = async () => {
     try {
-      // Get the current URL for proper redirect
-      const redirectTo = new URL('/admin', window.location.origin).toString();
-      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
         options: {
-          redirectTo,
-          skipBrowserRedirect: false
+          redirectTo: `${window.location.origin}/admin`
         }
       });
       if (error) {
