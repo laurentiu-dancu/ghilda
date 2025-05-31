@@ -19,29 +19,39 @@ export default function Auth() {
     e.preventDefault();
     setLoading(true);
     setMessage('');
+    console.log('Starting authentication:', { mode, email });
 
     try {
       if (mode === 'register') {
+        console.log('Attempting registration');
         const { error } = await supabase.auth.signUp({
           email,
           password,
           options: { emailRedirectTo: `${window.location.origin}/admin` }
         });
-        if (error) throw error;
+        if (error) {
+          console.error('Registration error:', error);
+          throw error;
+        }
+        console.log('Registration successful');
         setMessage('Cont creat cu succes! Poți să te autentifici acum.');
         setMode('login');
       } else {
+        console.log('Attempting login');
         const { error } = await supabase.auth.signInWithPassword({
           email,
           password
         });
         if (error) {
+          console.error('Login error:', error);
           throw error;
         } else {
+          console.log('Login successful, redirecting to dashboard');
           window.location.href = '/admin/dashboard';
         }
       }
     } catch (error) {
+      console.error('Authentication error:', error);
       setMessage(error.message);
     } finally {
       setLoading(false);
@@ -49,6 +59,7 @@ export default function Auth() {
   };
 
   const handleGitHubLogin = async () => {
+    console.log('Starting GitHub authentication');
     try {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
@@ -57,8 +68,13 @@ export default function Auth() {
           scopes: 'user'
         }
       });
-      if (error) throw error;
+      if (error) {
+        console.error('GitHub auth error:', error);
+        throw error;
+      }
+      console.log('GitHub auth initiated');
     } catch (error) {
+      console.error('GitHub auth error:', error);
       setMessage('Autentificarea cu GitHub a eșuat. Te rugăm să încerci din nou.');
     }
   };
