@@ -1,0 +1,41 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Ghilda Călătorilor - Experiențe și povești din călătorii" } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description}>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body class="min-h-screen bg-white">
+    <header class="border-b">
+      <nav class="max-w-4xl mx-auto px-4 py-4">
+        <div class="flex justify-between items-center">
+          <a href="/" class="text-2xl font-bold text-gray-800">Ghilda Călătorilor</a>
+          <div class="space-x-4">
+            <a href="/calatorii" class="text-gray-600 hover:text-gray-900">Călătorii</a>
+            <a href="/despre" class="text-gray-600 hover:text-gray-900">Despre</a>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main class="max-w-4xl mx-auto px-4 py-8">
+      <slot />
+    </main>
+    <footer class="border-t mt-12">
+      <div class="max-w-4xl mx-auto px-4 py-6 text-center text-gray-600">
+        <p>&copy; {new Date().getFullYear()} Ghilda Călătorilor. Toate drepturile rezervate.</p>
+      </div>
+    </footer>
+  </body>
+</html>
