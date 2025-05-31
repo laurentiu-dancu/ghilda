@@ -33,6 +33,7 @@ export default function Auth() {
           password
         });
         if (error) throw error;
+        window.location.href = '/admin/dashboard';
       }
     } catch (error) {
       setMessage(error.message);
@@ -46,7 +47,7 @@ export default function Auth() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
         options: {
-          redirectTo: `${window.location.origin}/admin`,
+          redirectTo: `${window.location.origin}/admin/dashboard`,
           scopes: 'user'
         }
       });
