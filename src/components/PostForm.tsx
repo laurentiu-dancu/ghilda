@@ -1,6 +1,11 @@
 import { useState, useEffect } from 'react';
-import { supabase } from '../lib/supabase';
+import { createBrowserClient } from '@supabase/ssr';
 import { useAuth } from '../hooks/useAuth';
+
+const supabase = createBrowserClient(
+  import.meta.env.PUBLIC_SUPABASE_URL,
+  import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+);
 
 interface PostFormProps {
   initialData?: {
@@ -73,61 +78,61 @@ export default function PostForm({ initialData = {} }: PostFormProps) {
   }, [user]);
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6" style={{ opacity: user ? 1 : 0.5 }}>
+    <form onSubmit={handleSubmit} className="bg-white rounded-lg shadow-lg p-8 space-y-6" style={{ opacity: user ? 1 : 0.5 }}>
       <div>
-        <label className="block text-sm font-medium text-gray-700">Titlu</label>
+        <label className="block text-sm font-medium text-earth-700 mb-1">Titlu</label>
         <input
           type="text"
           value={formData.title}
           onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          className="w-full px-3 py-2 border border-earth-200 rounded-md focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
           disabled={!user}
           required
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Conținut</label>
+        <label className="block text-sm font-medium text-earth-700 mb-1">Conținut</label>
         <textarea
           value={formData.content}
           onChange={(e) => setFormData({ ...formData, content: e.target.value })}
           rows={10}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          className="w-full px-3 py-2 border border-earth-200 rounded-md focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
           disabled={!user}
           required
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Locație</label>
+        <label className="block text-sm font-medium text-earth-700 mb-1">Locație</label>
         <input
           type="text"
           value={formData.location}
           onChange={(e) => setFormData({ ...formData, location: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          className="w-full px-3 py-2 border border-earth-200 rounded-md focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
           disabled={!user}
           required
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Durată</label>
+        <label className="block text-sm font-medium text-earth-700 mb-1">Durată</label>
         <input
           type="text"
           value={formData.duration}
           onChange={(e) => setFormData({ ...formData, duration: e.target.value })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          className="w-full px-3 py-2 border border-earth-200 rounded-md focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
           disabled={!user}
           required
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700">Dificultate</label>
+        <label className="block text-sm font-medium text-earth-700 mb-1">Dificultate</label>
         <select
           value={formData.difficulty}
           onChange={(e) => setFormData({ ...formData, difficulty: e.target.value as 'ușor' | 'mediu' | 'dificil' })}
-          className="mt-1 block w-full rounded-md border-gray-300 shadow-sm"
+          className="w-full px-3 py-2 border border-earth-200 rounded-md focus:ring-2 focus:ring-forest-500 focus:border-forest-500"
           disabled={!user}
         >
           <option value="ușor">Ușor</option>
@@ -141,16 +146,16 @@ export default function PostForm({ initialData = {} }: PostFormProps) {
           type="checkbox"
           checked={formData.published}
           onChange={(e) => setFormData({ ...formData, published: e.target.checked })}
-          className="rounded border-gray-300 text-blue-600 shadow-sm"
+          className="rounded border-earth-300 text-forest-600 focus:ring-forest-500"
           disabled={!user}
         />
-        <label className="ml-2 text-sm text-gray-700">Publicat</label>
+        <label className="ml-2 text-sm text-earth-700">Publicat</label>
       </div>
 
       <button
         type="submit"
         disabled={isLoading || !user}
-        className="w-full bg-blue-600 text-white rounded-md py-2 hover:bg-blue-700 disabled:bg-blue-400"
+        className="w-full bg-forest-600 text-white rounded-md py-2 hover:bg-forest-700 disabled:bg-forest-400 transition-colors"
       >
         {isLoading ? 'Se procesează...' : initialData.id ? 'Actualizează' : 'Creează'}
       </button>
@@ -158,7 +163,7 @@ export default function PostForm({ initialData = {} }: PostFormProps) {
       {message && (
         <p className={`mt-4 text-sm text-center ${
           message.startsWith('Eroare') ? 'text-red-600' : 'text-green-600'
-        }`}>
+        } font-medium`}>
           {message}
         </p>
       )}
