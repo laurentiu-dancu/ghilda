@@ -17,11 +17,9 @@ export default function Navigation() {
             Despre
           </a>
           {isAuthenticated ? (
-            <div className="flex items-center gap-4">
-              <a href="/admin" className="text-blue-600 hover:text-blue-800 font-medium">
-                Panou Admin
-              </a>
-            </div>
+            <a href="/admin" className="text-blue-600 hover:text-blue-800">
+              Panou Admin
+            </a>
           ) : (
             <a href="/admin" className="text-blue-600 hover:text-blue-800">
               Autentificare
