@@ -1,61 +1,8 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Auth from '../../components/Auth';
-import { supabase } from '../../lib/supabase';
-
-const session = await supabase.auth.getSession();
-const isAuthenticated = !!session.data.session;
-
-let posts = [];
-if (isAuthenticated) {
-  const { data } = await supabase
-    .from('posts')
-    .select('*')
-    .order('created_at', { ascending: false });
-  posts = data || [];
-}
 ---
 
-<Layout title="Admin - Ghilda Călătorilor">
-  <div class="max-w-4xl mx-auto">
-    {!isAuthenticated ? (
-      <Auth client:load />
-    ) : (
-      <div class="space-y-6">
-        <h1 class="text-3xl font-bold">Panou de administrare</h1>
-        <a
-          href="/admin/post/new"
-          class="inline-block bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
-        >
-          Articol nou
-        </a>
-        
-        <div class="mt-8">
-          <h2 class="text-xl font-semibold mb-4">Articolele tale</h2>
-          {posts.length === 0 ? (
-            <p class="text-gray-600">Nu ai creat încă niciun articol.</p>
-          ) : (
-            <div class="space-y-4">
-              {posts.map((post) => (
-                <div class="border rounded-lg p-4 flex justify-between items-center">
-                  <div>
-                    <h3 class="font-medium">{post.title}</h3>
-                    <p class="text-sm text-gray-600">
-                      {post.published ? 'Publicat' : 'Ciornă'} • {post.location} • {post.difficulty}
-                    </p>
-                  </div>
-                  <a
-                    href={`/admin/post/${post.id}`}
-                    class="bg-gray-100 text-gray-700 px-3 py-1 rounded hover:bg-gray-200"
-                  >
-                    Editează
-                  </a>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      </div>
-    )}
-  </div>
+<Layout title="Autentificare - Ghilda Călătorilor">
+  <Auth client:load />
 </Layout>
