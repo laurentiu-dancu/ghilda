@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 export default function Navigation() {
   const { session, loading } = useAuth();
   const isAuthenticated = !!session;
+  const userEmail = session?.user?.email;
 
   return (
     <nav className="max-w-4xl mx-auto px-4 py-4">
@@ -19,9 +20,12 @@ export default function Navigation() {
           </a>
           {!loading && (
             isAuthenticated ? (
-              <a href="/admin" className="text-blue-600 hover:text-blue-800">
-                Panou Admin
-              </a>
+              <div className="flex items-center gap-4">
+                <span className="text-gray-600">{userEmail}</span>
+                <a href="/admin" className="text-blue-600 hover:text-blue-800">
+                  Panou Admin
+                </a>
+              </div>
             ) : (
               <a href="/admin" className="text-blue-600 hover:text-blue-800">
                 Autentificare
