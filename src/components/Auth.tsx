@@ -1,7 +1,12 @@
 import { useState } from 'react';
-import { supabase } from '../lib/supabase';
+import { createBrowserClient } from '@supabase/ssr';
 
 type AuthMode = 'login' | 'register';
+
+const supabase = createBrowserClient(
+  import.meta.env.PUBLIC_SUPABASE_URL,
+  import.meta.env.PUBLIC_SUPABASE_ANON_KEY
+);
 
 export default function Auth() {
   const [mode, setMode] = useState<AuthMode>('login');
@@ -20,9 +25,7 @@ export default function Auth() {
         const { error } = await supabase.auth.signUp({
           email,
           password,
-          options: {
-            emailRedirectTo: `${window.location.origin}/admin`
-          }
+          options: { emailRedirectTo: `${window.location.origin}/admin` }
         });
         if (error) throw error;
         setMessage('Cont creat cu succes! Poți să te autentifici acum.');
@@ -32,8 +35,11 @@ export default function Auth() {
           email,
           password
         });
-        if (error) throw error;
-        window.location.href = '/admin/dashboard';
+        if (error) {
+          throw error;
+        } else {
+          window.location.href = '/admin/dashboard';
+        }
       }
     } catch (error) {
       setMessage(error.message);
