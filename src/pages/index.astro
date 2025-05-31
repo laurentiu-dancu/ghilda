@@ -26,21 +26,24 @@ const { data: posts } = await supabase
 ---
 
 <Layout title="Ghilda Călătorilor - Povești din călătorii">
-  <section class="prose lg:prose-xl mx-auto mb-12">
-    <h1 class="text-4xl font-bold text-center mb-8">Bine ai venit la Ghilda Călătorilor</h1>
-    <p class="text-lg text-gray-700 text-center">
+  <div class="relative -mt-12 mb-16 py-24 bg-texture bg-cover bg-center">
+    <div class="absolute inset-0 bg-black bg-opacity-50"></div>
+    <div class="relative max-w-4xl mx-auto text-center text-white">
+      <h1 class="text-5xl font-bold mb-6">Bine ai venit la Ghilda Călătorilor</h1>
+      <p class="text-xl text-gray-100 max-w-2xl mx-auto">
       Un spațiu dedicat experiențelor și poveștilor din călătorii, 
       unde împărtășim aventurile noastre prin România și nu numai.
-    </p>
-  </section>
+      </p>
+    </div>
+  </div>
 
   <section class="max-w-4xl mx-auto">
     {posts && posts.length > 0 ? (
       <div class="grid gap-6">
         {posts.map((post) => (
-          <article class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow">
+          <article class="bg-white rounded-lg shadow-md p-8 hover:shadow-xl transition-all transform hover:-translate-y-1">
             <h2 class="text-2xl font-bold mb-2">
-              <a href={`/calatorii/${post.id}`} class="text-gray-900 hover:text-blue-600">
+              <a href={`/calatorii/${post.id}`} class="text-earth-800 hover:text-forest-600 transition-colors">
                 {post.title}
               </a>
             </h2>
@@ -85,7 +88,7 @@ const { data: posts } = await supabase
         {page > 1 && (
           <a
             href={`/?page=${page - 1}`}
-            class="px-4 py-2 bg-white border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+            class="px-4 py-2 bg-white border border-earth-200 text-earth-600 rounded-md text-sm hover:bg-earth-50 transition-colors"
           >
             Anterior
           </a>
@@ -95,8 +98,8 @@ const { data: posts } = await supabase
             href={`/?page=${pageNum}`}
             class={`px-4 py-2 border rounded-md text-sm ${
               pageNum === page
-                ? 'bg-blue-600 text-white border-blue-600'
-                : 'bg-white border-gray-300 hover:bg-gray-50'
+                ? 'bg-forest-600 text-white border-forest-600'
+                : 'bg-white border-earth-200 text-earth-600 hover:bg-earth-50'
             }`}
           >
             {pageNum}
@@ -105,7 +108,7 @@ const { data: posts } = await supabase
         {page < totalPages && (
           <a
             href={`/?page=${page + 1}`}
-            class="px-4 py-2 bg-white border border-gray-300 rounded-md text-sm hover:bg-gray-50"
+            class="px-4 py-2 bg-white border border-earth-200 text-earth-600 rounded-md text-sm hover:bg-earth-50 transition-colors"
           >
             Următoarea
           </a>

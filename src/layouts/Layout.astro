@@ -19,15 +19,15 @@ const { title, description = "Ghilda Călătorilor - Experiențe și povești di
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body class="min-h-screen bg-white">
-    <header class="border-b">
+  <body class="min-h-screen bg-earth-50">
+    <header class="bg-white shadow-sm relative z-10">
       <Navigation client:load />
     </header>
-    <main class="max-w-4xl mx-auto px-4 py-8">
+    <main class="max-w-4xl mx-auto px-4 py-12">
       <slot />
     </main>
-    <footer class="border-t mt-12">
-      <div class="max-w-4xl mx-auto px-4 py-6 text-center text-gray-600">
+    <footer class="bg-earth-900 text-earth-100 mt-16">
+      <div class="max-w-4xl mx-auto px-4 py-8 text-center">
         <p>&copy; {new Date().getFullYear()} Ghilda Călătorilor. Toate drepturile rezervate.</p>
       </div>
     </footer>
