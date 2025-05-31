@@ -3,10 +3,8 @@ import { useAuth } from '../contexts/AuthContext';
 export default function Navigation() {
   const { session, loading } = useAuth();
   const isAuthenticated = !!session;
-  const userEmail = session?.user?.email || session?.user?.user_metadata?.email;
+  const userEmail = session?.user?.email || session?.user?.user_metadata?.email || session?.user?.user_metadata?.preferred_username;
   
-  console.log('Navigation render:', { isAuthenticated, userEmail, loading });
-
   return (
     <nav className="max-w-4xl mx-auto px-4 py-4">
       <div className="flex justify-between items-center">
@@ -20,7 +18,9 @@ export default function Navigation() {
           <a href="/despre" className="text-gray-600 hover:text-gray-900">
             Despre
           </a>
-          {!loading && (
+          {loading ? (
+            <span className="text-gray-400">Loading...</span>
+          ) : (
             isAuthenticated ? (
               <div className="flex items-center gap-4">
                 {userEmail && <span className="text-gray-600">{userEmail}</span>}
