@@ -7,7 +7,7 @@ export default function Auth() {
         provider: 'github',
         options: {
           redirectTo: `${window.location.origin}/admin`,
-          scopes: 'read:user user:email'
+          scopes: 'user'
         }
       });
       if (error) {
