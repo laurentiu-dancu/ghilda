@@ -1,5 +1,5 @@
 import { defineMiddleware } from 'astro:middleware';
-import { supabase } from '../lib/supabase';
+import { createSupabaseServerClient } from '../lib/supabaseServer';
 
 const protectedRoutes = ['/admin/dashboard', '/admin/post'];
 
@@ -8,6 +8,7 @@ export const onRequest = defineMiddleware(async ({ request, redirect }, next) =>
   const isProtectedRoute = protectedRoutes.some(route => url.pathname.startsWith(route));
 
   if (isProtectedRoute) {
+    const supabase = createSupabaseServerClient(Astro.cookies);
     const { data: { session } } = await supabase.auth.getSession();
 
     if (!session) {

@@ -1,8 +1,9 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import { supabase } from '../../lib/supabase';
+import { createSupabaseServerClient } from '../../lib/supabaseServer';
 
 console.log('Auth Debug: Dashboard page load');
+const supabase = createSupabaseServerClient(Astro.cookies);
 const { data: { session } } = await supabase.auth.getSession();
 console.log('Auth Debug: Dashboard session check:', {
   hasSession: !!session,

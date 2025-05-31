@@ -1,9 +1,10 @@
 ---
 import Layout from '../../../layouts/Layout.astro';
 import PostForm from '../../../components/PostForm';
-import { supabase } from '../../../lib/supabase';
+import { createSupabaseServerClient } from '../../../lib/supabaseServer';
 
 const { id } = Astro.params;
+const supabase = createSupabaseServerClient(Astro.cookies);
 
 const { data: post, error } = await supabase
   .from('posts')
