@@ -1,0 +1,24 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import PostForm from '../../../components/PostForm';
+import { supabase } from '../../../lib/supabase';
+
+const { id } = Astro.params;
+
+const { data: post, error } = await supabase
+  .from('posts')
+  .select('*')
+  .eq('id', id)
+  .single();
+
+if (error) {
+  return Astro.redirect('/admin');
+}
+---
+
+<Layout title="Editare articol - Ghilda Călătorilor">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">Editare articol</h1>
+    <PostForm client:load initialData={post} />
+  </div>
+</Layout>

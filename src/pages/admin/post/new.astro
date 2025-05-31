@@ -1,0 +1,11 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import PostForm from '../../../components/PostForm';
+---
+
+<Layout title="Articol nou - Ghilda Călătorilor">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-6">Articol nou</h1>
+    <PostForm client:load />
+  </div>
+</Layout>

@@ -5,6 +5,15 @@ import { supabase } from '../../lib/supabase';
 
 const session = await supabase.auth.getSession();
 const isAuthenticated = !!session.data.session;
+
+let posts = [];
+if (isAuthenticated) {
+  const { data } = await supabase
+    .from('posts')
+    .select('*')
+    .order('created_at', { ascending: false });
+  posts = data || [];
+}
 ---
 
 <Layout title="Admin - Ghilda Călătorilor">
@@ -20,6 +29,32 @@ const isAuthenticated = !!session.data.session;
         >
           Articol nou
         </a>
+        
+        <div class="mt-8">
+          <h2 class="text-xl font-semibold mb-4">Articolele tale</h2>
+          {posts.length === 0 ? (
+            <p class="text-gray-600">Nu ai creat încă niciun articol.</p>
+          ) : (
+            <div class="space-y-4">
+              {posts.map((post) => (
+                <div class="border rounded-lg p-4 flex justify-between items-center">
+                  <div>
+                    <h3 class="font-medium">{post.title}</h3>
+                    <p class="text-sm text-gray-600">
+                      {post.published ? 'Publicat' : 'Ciornă'} • {post.location} • {post.difficulty}
+                    </p>
+                  </div>
+                  <a
+                    href={`/admin/post/${post.id}`}
+                    class="bg-gray-100 text-gray-700 px-3 py-1 rounded hover:bg-gray-200"
+                  >
+                    Editează
+                  </a>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     )}
   </div>
