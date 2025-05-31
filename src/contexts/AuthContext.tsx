@@ -14,26 +14,22 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   
+  const updateSession = (newSession: Session | null) => {
+    setSession(newSession);
+    setLoading(false);
+  };
+  
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setLoading(false);
+      updateSession(session);
     });
     
     // Listen for auth changes
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, newSession) => {
-      setLoading(true);
-      setSession((currentSession) => {
-        // Only update if there's actually a change
-        if (currentSession?.user?.id !== newSession?.user?.id) {
-          return newSession;
-        }
-        return currentSession;
-      });
-      setTimeout(() => setLoading(false), 0);
+      updateSession(newSession);
     });
     
     return () => subscription.unsubscribe();
