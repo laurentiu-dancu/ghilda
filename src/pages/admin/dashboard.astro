@@ -2,17 +2,31 @@
 import Layout from '../../layouts/Layout.astro';
 import { supabase } from '../../lib/supabase';
 
+console.log('Auth Debug: Dashboard page load');
 const { data: { session } } = await supabase.auth.getSession();
+console.log('Auth Debug: Dashboard session check:', {
+  hasSession: !!session,
+  userId: session?.user?.id,
+  email: session?.user?.email,
+  timestamp: new Date().toISOString()
+});
+
 if (!session) {
+  console.log('Auth Debug: No session, redirecting to /admin');
   return Astro.redirect('/admin');
 }
 
+console.log('Auth Debug: Fetching posts for user:', session.user.id);
 const { data: posts } = await supabase
   .from('posts')
   .select('*')
   .eq('user_id', session.user.id)
   .order('created_at', { ascending: false });
 
+console.log('Auth Debug: Posts fetch result:', {
+  postsCount: posts?.length ?? 0,
+  timestamp: new Date().toISOString()
+});
 ---
 
 <Layout title="Panou de administrare - Ghilda Călătorilor">
