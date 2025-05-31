@@ -6,7 +6,7 @@ export default function Auth() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
         options: {
-          redirectTo: `${import.meta.env.PUBLIC_SITE_URL}/admin`
+          redirectTo: `${window.location.origin}/admin`
         }
       });
       if (error) throw error;
