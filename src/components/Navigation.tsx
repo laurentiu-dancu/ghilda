@@ -2,17 +2,16 @@ import { useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 
 export default function Navigation() {
-  const { session } = useAuth();
+  const { user, isAuthenticated } = useAuth();
   
   useEffect(() => {
     console.log('Navigation session changed:', {
-      session,
-      isAuthenticated: !!session,
-      userEmail: session?.user?.email,
-      hasUser: !!session?.user,
-      metadata: session?.user?.user_metadata
+      isAuthenticated,
+      userEmail: user?.email,
+      hasUser: !!user,
+      metadata: user?.user_metadata
     });
-  }, [session]);
+  }, [user, isAuthenticated]);
 
   return (
     <nav className="max-w-4xl mx-auto px-4 py-4">
@@ -27,10 +26,10 @@ export default function Navigation() {
           <a href="/despre" className="text-gray-600 hover:text-gray-900">
             Despre
           </a>
-          {session ? (
+          {isAuthenticated ? (
             <div className="flex items-center gap-4">
-              <span className="text-gray-600">{session?.user?.email}</span>
-              <a href="/admin" className="text-blue-600 hover:text-blue-800">
+              <span className="text-gray-600">{user?.email}</span>
+              <a href="/admin" className="text-blue-600 hover:text-blue-800 font-medium">
                 Panou Admin
               </a>
             </div>
@@ -43,4 +42,3 @@ export default function Navigation() {
       </div>
     </nav>
   );
-}
