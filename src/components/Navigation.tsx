@@ -18,7 +18,6 @@ export default function Navigation() {
           </a>
           {isAuthenticated ? (
             <div className="flex items-center gap-4">
-              <span className="text-gray-600">{user?.email}</span>
               <a href="/admin" className="text-blue-600 hover:text-blue-800 font-medium">
                 Panou Admin
               </a>
