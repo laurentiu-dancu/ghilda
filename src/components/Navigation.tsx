@@ -2,6 +2,7 @@ import { useAuth } from '../contexts/AuthContext';
 
 export default function Navigation() {
   const { session } = useAuth();
+  console.log(session)
   const isAuthenticated = !!session;
 
   return (
