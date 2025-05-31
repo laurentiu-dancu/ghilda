@@ -3,21 +3,32 @@ import { supabase } from '../lib/supabase';
 export default function Auth() {
   const handleGitHubLogin = async () => {
     try {
+      // Get the current URL for proper redirect
+      const redirectTo = new URL('/admin', window.location.origin).toString();
+      
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'github',
         options: {
-          redirectTo: `${window.location.origin}/admin`
+          redirectTo,
+          skipBrowserRedirect: false
         }
       });
-      if (error) throw error;
+      if (error) {
+        console.error('Auth error:', error);
+        throw error;
+      }
     } catch (error) {
-      console.error('Error:', error.message);
+      alert('Authentication failed. Please try again.');
+      console.error('Auth error:', error);
     }
   };
 
   return (
     <div className="max-w-md mx-auto mt-8">
       <h2 className="text-2xl font-bold mb-6 text-center">Autentificare</h2>
+      <p className="text-gray-600 mb-4 text-center">
+        Pentru a continua, te rugăm să te autentifici cu contul GitHub.
+      </p>
       <button
         onClick={handleGitHubLogin}
         className="w-full flex items-center justify-center gap-2 bg-gray-900 text-white rounded-md py-3 px-4 hover:bg-gray-800 transition-colors"
