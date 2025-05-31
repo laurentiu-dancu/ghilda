@@ -1,6 +1,84 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import Auth from '../../components/Auth';
+import { supabase } from '../../lib/supabase';
+
+const { data: { session } } = await supabase.auth.getSession();
+
+if (session) {
+  const { data: posts } = await supabase
+    .from('posts')
+    .select('*')
+    .eq('user_id', session.user.id)
+    .order('created_at', { ascending: false });
+
+  return (
+    <Layout title="Panou de administrare - Ghilda Călătorilor">
+      <div class="max-w-4xl mx-auto">
+        <div class="flex justify-between items-center mb-8">
+          <h1 class="text-3xl font-bold">Panou de administrare</h1>
+          <a
+            href="/admin/post/new"
+            class="inline-block bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
+          >
+            Articol nou
+          </a>
+        </div>
+        
+        <div class="mt-8">
+          <h2 class="text-xl font-semibold mb-4">Articolele tale</h2>
+          {!posts || posts.length === 0 ? (
+            <div class="text-center py-8">
+              <p class="text-gray-600 mb-4">Nu ai creat încă niciun articol.</p>
+              <a
+                href="/admin/post/new"
+                class="text-blue-600 hover:text-blue-800 underline"
+              >
+                Creează primul tău articol
+              </a>
+            </div>
+          ) : (
+            <div class="grid gap-4">
+              {posts.map((post) => (
+                <div class="border rounded-lg p-4 flex justify-between items-center bg-white shadow-sm hover:shadow-md transition-shadow">
+                  <div>
+                    <h3 class="font-medium">{post.title}</h3>
+                    <p class="text-sm text-gray-600">
+                      <span class={`inline-block px-2 py-0.5 rounded-full text-xs mr-2 ${
+                        post.published 
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-gray-100 text-gray-800'
+                      }`}>
+                        {post.published ? 'Publicat' : 'Ciornă'}
+                      </span>
+                      {post.location} • {post.difficulty}
+                    </p>
+                  </div>
+                  <div class="flex gap-2">
+                    {post.published && (
+                      <a
+                        href={`/calatorii/${post.id}`}
+                        class="bg-blue-50 text-blue-700 px-3 py-1 rounded hover:bg-blue-100"
+                      >
+                        Vezi
+                      </a>
+                    )}
+                    <a
+                      href={`/admin/post/${post.id}`}
+                      class="bg-gray-100 text-gray-700 px-3 py-1 rounded hover:bg-gray-200"
+                    >
+                      Editează
+                    </a>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </Layout>
+  );
+}
 ---
 
 <Layout title="Autentificare - Ghilda Călătorilor">

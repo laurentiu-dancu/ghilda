@@ -16,8 +16,8 @@ export default function Navigation() {
           <a href="/despre" className="text-gray-600 hover:text-gray-900">
             Despre
           </a>
-          <a 
-            href={isAuthenticated ? "/admin/dashboard" : "/admin"} 
+          <a
+            href="/admin"
             className="text-blue-600 hover:text-blue-800"
           >
             {isAuthenticated ? "Panou Admin" : "Autentificare"}
