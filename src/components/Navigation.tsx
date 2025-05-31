@@ -4,7 +4,13 @@ export default function Navigation() {
   const { session } = useAuth();
   const isAuthenticated = !!session;
   
-  console.log('Navigation render:', { isAuthenticated, userEmail: session?.user?.email });
+  console.log('Navigation render:', {
+    session,
+    isAuthenticated,
+    userEmail: session?.user?.email,
+    hasUser: !!session?.user,
+    metadata: session?.user?.user_metadata
+  });
 
   return (
     <nav className="max-w-4xl mx-auto px-4 py-4">

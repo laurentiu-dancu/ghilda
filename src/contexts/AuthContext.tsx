@@ -11,14 +11,24 @@ const AuthContext = createContext<{
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   
-  console.log('AuthProvider render:', { session });
+  console.log('AuthProvider render:', { 
+    session,
+    hasSession: !!session,
+    email: session?.user?.email,
+    metadata: session?.user?.user_metadata
+  });
   
   useEffect(() => {
     // Get initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log('Initial session:', session?.user?.email);
+      console.log('Initial session:', {
+        session,
+        hasSession: !!session,
+        email: session?.user?.email,
+        metadata: session?.user?.user_metadata
+      });
       setSession(session);
-    });
+    }).catch(error => console.error('Error getting session:', error));
     
     // Listen for auth changes
     const {
