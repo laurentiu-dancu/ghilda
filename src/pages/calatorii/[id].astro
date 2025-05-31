@@ -7,7 +7,7 @@ const supabase = createSupabaseServerClient(Astro.cookies);
 
 const { data: post, error } = await supabase
   .from('posts')
-  .select('*, profiles:user_id(name)')
+  .select('*')
   .eq('id', id)
   .eq('published', true)
   .single();
