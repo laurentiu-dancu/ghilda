@@ -2,7 +2,6 @@ import { useAuth } from '../contexts/AuthContext';
 
 export default function Navigation() {
   const { session } = useAuth();
-  console.log(session)
   const isAuthenticated = !!session;
 
   return (
@@ -20,7 +19,7 @@ export default function Navigation() {
           </a>
           {isAuthenticated ? (
             <div className="flex items-center gap-4">
-              <span className="text-gray-600">{session.user.email}</span>
+              <span className="text-gray-600">{session?.user?.email}</span>
               <a href="/admin" className="text-blue-600 hover:text-blue-800">
                 Panou Admin
               </a>
